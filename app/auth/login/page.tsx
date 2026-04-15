@@ -1,0 +1,42 @@
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen bg-zinc-50 px-6 py-12 dark:bg-zinc-950">
+      <main className="mx-auto max-w-3xl rounded-3xl bg-white p-10 shadow-xl shadow-zinc-200 dark:bg-zinc-900 dark:shadow-black/20">
+        <div className="flex flex-col gap-4">
+          <div>
+            <h1 className="text-4xl font-semibold text-zinc-950 dark:text-white">Sign in</h1>
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">Access your AI assistant dashboard, history, and voice workflows securely.</p>
+          </div>
+
+          <section className="space-y-6">
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Email</label>
+              <input className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-800 dark:bg-zinc-950 dark:text-white" type="email" placeholder="you@company.com" />
+            </div>
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</label>
+              <input className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-800 dark:bg-zinc-950 dark:text-white" type="password" placeholder="Enter your password" />
+            </div>
+
+            <button className="w-full rounded-full bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
+              Continue
+            </button>
+
+            <div className="flex items-center justify-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+              <span>Or continue with</span>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">Google</button>
+              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">GitHub</button>
+            </div>
+
+            <div className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+              <a href="/auth/forgot-password" className="font-medium text-zinc-950 dark:text-white">Forgot password?</a>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  );
+}
