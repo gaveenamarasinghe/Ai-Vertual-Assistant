@@ -1,51 +1,95 @@
 export default function RemindersPage() {
   return (
-    <div className="min-h-screen bg-zinc-100 px-6 py-8 dark:bg-zinc-950">
-      <main className="mx-auto max-w-6xl rounded-3xl border border-zinc-200 bg-white p-12 shadow-xl shadow-zinc-200/40 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-black/20">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-white px-6 py-10 dark:from-zinc-950 dark:to-zinc-900">
+      <main className="mx-auto max-w-7xl rounded-[2rem] bg-white p-10 shadow-2xl shadow-zinc-200/40 dark:bg-zinc-900 dark:shadow-black/30">
+
+        {/* HEADER */}
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-4xl font-semibold text-zinc-950 dark:text-white">Tasks & Reminders</h1>
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-300">Stay on top of your priorities with smart reminders and AI-driven suggestions.</p>
+            <h1 className="text-4xl font-bold tracking-tight text-zinc-950 dark:text-white">
+              Tasks & Reminders
+            </h1>
+            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-300">
+              Organize your day with AI-powered reminders, smart scheduling, and productivity insights.
+            </p>
           </div>
-          <button className="rounded-full bg-zinc-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
-            Add reminder
+
+          <button className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-500">
+            + Add Reminder
           </button>
         </div>
 
-        <div className="mt-10 grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
-          <section className="rounded-3xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-950">
-            <div className="flex items-center justify-between gap-4">
+        {/* HERO IMAGE */}
+        <div className="mt-10 overflow-hidden rounded-3xl shadow-xl">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-abYKIweQ1e45dFqwVLZhhWxiv_jobdDadA&s"
+            alt="Task Management"
+            className="h-[260px] w-full object-cover"
+          />
+        </div>
+
+        {/* CONTENT */}
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
+
+          {/* LEFT - TASK LIST */}
+          <section className="rounded-3xl bg-zinc-50 p-8 dark:bg-zinc-950">
+            <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-semibold text-zinc-950 dark:text-white">Upcoming items</h2>
-                <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Manage tasks and reminders across projects and daily routines.</p>
+                <h2 className="text-2xl font-semibold text-zinc-900 dark:text-white">
+                  Upcoming Tasks
+                </h2>
+                <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                  Stay on track with your daily and scheduled activities.
+                </p>
               </div>
-              <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600 dark:bg-zinc-900 dark:text-zinc-300">5 due</span>
+              <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-600">
+                5 Active
+              </span>
             </div>
 
             <div className="mt-6 space-y-4">
               {[
-                { title: "Review Q2 strategy", time: "Today · 3:00 PM" },
-                { title: "Weekly sync with operations", time: "Tomorrow · 11:00 AM" },
-                { title: "Update client reminder", time: "Friday · 9:30 AM" },
-              ].map((item) => (
-                <div key={item.title} className="rounded-3xl bg-white p-5 shadow-sm shadow-zinc-200/30 dark:bg-zinc-900 dark:shadow-black/10">
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="font-semibold text-zinc-950 dark:text-white">{item.title}</p>
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400">{item.time}</span>
+                { title: "Review Q2 Strategy", time: "Today • 3:00 PM" },
+                { title: "Team Meeting", time: "Tomorrow • 11:00 AM" },
+                { title: "Client Follow-up", time: "Friday • 9:30 AM" },
+              ].map((task, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between rounded-2xl bg-white p-5 shadow-sm transition hover:shadow-md dark:bg-zinc-900"
+                >
+                  <div>
+                    <p className="font-semibold text-zinc-900 dark:text-white">
+                      {task.title}
+                    </p>
+                    <p className="text-xs text-zinc-500 mt-1">{task.time}</p>
                   </div>
+
+                  <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-600">
+                    Pending
+                  </span>
                 </div>
               ))}
             </div>
           </section>
 
-          <aside className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm shadow-zinc-200/40 dark:border-zinc-800 dark:bg-zinc-950 dark:shadow-black/20">
-            <h2 className="text-2xl font-semibold text-zinc-950 dark:text-white">AI suggestions</h2>
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-300">The assistant can draft reminders, suggest due dates, and identify follow-up actions.</p>
-            <ul className="mt-6 space-y-3 text-sm text-zinc-700 dark:text-zinc-300">
-              <li>• Schedule review meetings automatically</li>
-              <li>• Add follow-ups after client calls</li>
-              <li>• Remind you of monthly reports</li>
+          {/* RIGHT - AI PANEL */}
+          <aside className="relative rounded-3xl bg-zinc-950 p-8 text-white shadow-2xl dark:bg-zinc-800">
+            <h2 className="text-xl font-semibold">AI Suggestions</h2>
+            <p className="mt-3 text-sm text-zinc-300">
+              Let AI help you plan smarter by suggesting tasks, reminders, and follow-ups automatically.
+            </p>
+
+            <ul className="mt-6 space-y-3 text-sm text-zinc-300">
+              <li>• Auto-schedule meetings based on availability</li>
+              <li>• Generate follow-ups after conversations</li>
+              <li>• Monthly and weekly task recommendations</li>
+              <li>• Smart deadline predictions</li>
             </ul>
+
+            {/* FLOATING CARD */}
+            <div className="absolute bottom-6 left-1/2 w-[85%] -translate-x-1/2 rounded-2xl bg-white/10 p-4 text-xs text-zinc-300 backdrop-blur">
+              AI-driven productivity • Smart reminders • Real-time updates
+            </div>
           </aside>
         </div>
       </main>

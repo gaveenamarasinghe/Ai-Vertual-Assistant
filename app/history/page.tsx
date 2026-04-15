@@ -1,35 +1,96 @@
 export default function HistoryPage() {
   return (
-    <div className="min-h-screen bg-zinc-100 px-6 py-8 dark:bg-zinc-950">
-      <main className="mx-auto max-w-6xl rounded-3xl border border-zinc-200 bg-white p-10 shadow-xl shadow-zinc-200/40 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-black/20">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-4xl font-semibold text-zinc-950 dark:text-white">Conversation history</h1>
-            <p className="mt-3 max-w-2xl text-sm text-zinc-600 dark:text-zinc-300">Locate your previous chats, export conversation transcripts, or remove sessions you no longer need.</p>
+    <div className="min-h-screen bg-gradient-to-br from-zinc-100 via-white to-zinc-50 px-6 py-10 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+      <main className="mx-auto max-w-7xl space-y-10">
+
+        {/* HEADER */}
+        <section className="rounded-[2rem] bg-white p-10 shadow-2xl shadow-zinc-200/40 dark:bg-zinc-900 dark:shadow-black/30">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight text-zinc-950 dark:text-white">
+                Conversation History
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm text-zinc-600 dark:text-zinc-300">
+                Easily manage, revisit, and organize your AI conversations.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <button className="rounded-full border border-zinc-300 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">
+                Export Data
+              </button>
+              <button className="rounded-full bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-red-500">
+                Clear Selected
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <button className="rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">Export history</button>
-            <button className="rounded-full bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">Clear selected</button>
+        </section>
+
+        {/* HERO IMAGE */}
+        <div className="relative overflow-hidden rounded-3xl shadow-xl">
+          <img
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71"
+            alt="AI History"
+            className="h-[240px] w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+          <div className="absolute bottom-4 left-6 text-white">
+            <h2 className="text-lg font-semibold">Your AI Activity</h2>
+            <p className="text-xs opacity-80">Search • Manage • Revisit</p>
           </div>
         </div>
 
-        <div className="mt-10 space-y-6">
+        {/* SEARCH + FILTER */}
+        <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative w-full sm:w-1/2">
+            <input
+              type="text"
+              placeholder="Search conversations..."
+              className="w-full rounded-full border border-zinc-300 px-5 py-3 pl-10 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+            />
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">🔍</span>
+          </div>
+
+          <select className="rounded-full border border-zinc-300 px-4 py-3 text-sm shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-white">
+            <option>All Time</option>
+            <option>Today</option>
+            <option>This Week</option>
+            <option>This Month</option>
+          </select>
+        </section>
+
+        {/* HISTORY LIST */}
+        <section className="space-y-4">
           {[
-            { title: "Travel planning review", meta: "Apr 14 · 12 messages" },
-            { title: "Reminder workflow setup", meta: "Apr 13 · 8 messages" },
-            { title: "Voice assistant onboarding", meta: "Apr 12 · 6 messages" },
-          ].map((item) => (
-            <div key={item.title} className="rounded-3xl bg-zinc-50 p-6 dark:bg-zinc-950">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold text-zinc-950 dark:text-white">{item.title}</h2>
-                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{item.meta}</p>
-                </div>
-                <button className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-xs text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100">View details</button>
+            { title: "Travel Planning Review", meta: "Apr 14 • 12 messages" },
+            { title: "Reminder Workflow Setup", meta: "Apr 13 • 8 messages" },
+            { title: "Voice Assistant Onboarding", meta: "Apr 12 • 6 messages" },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="group flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-xl dark:bg-zinc-900"
+            >
+              <div>
+                <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                  {item.title}
+                </h2>
+                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                  {item.meta}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 opacity-0 transition group-hover:opacity-100">
+                <button className="rounded-full border border-zinc-300 px-4 py-2 text-xs text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800">
+                  View
+                </button>
+                <button className="rounded-full bg-indigo-600 px-4 py-2 text-xs text-white shadow-md transition hover:bg-indigo-500">
+                  Open
+                </button>
               </div>
             </div>
           ))}
-        </div>
+        </section>
+
       </main>
     </div>
   );

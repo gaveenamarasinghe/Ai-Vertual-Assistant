@@ -20,6 +20,18 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## CI/CD
+
+This repository includes a GitHub Actions workflow at `.github/workflows/ci-cd.yml`.
+
+- `ci` job: installs dependencies, runs `npm run lint`, and builds the Next.js app.
+- `deploy` job: runs on `main` branch pushes and deploys to Vercel when the following secrets are configured:
+  - `VERCEL_TOKEN`
+  - `VERCEL_ORG_ID`
+  - `VERCEL_PROJECT_ID`
+
+If you want to use the deployment job, add those secrets to your GitHub repository settings.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
