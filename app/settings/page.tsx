@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { apiGet, apiPost } from "@/lib/api";
+import { useState } from "react";
 
 export default function SettingsPage() {
   const [fullName, setFullName] = useState("");
@@ -12,36 +11,9 @@ export default function SettingsPage() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function loadSettings() {
-      try {
-        const data = await apiGet<{ voiceStyle: string; language: string; darkMode: boolean }>("/api/settings");
-        setVoiceStyle(data.voiceStyle);
-        setLanguage(data.language);
-        setDarkMode(data.darkMode);
-      } catch (exception) {
-        setError(exception instanceof Error ? exception.message : "Unable to load settings.");
-      }
-    }
-
-    loadSettings();
-  }, []);
-
-  async function saveChanges() {
+  function saveChanges() {
     setError("");
-    setStatus("Saving settings...");
-
-    try {
-      await apiPost("/api/settings", {
-        voiceStyle,
-        language,
-        darkMode,
-      });
-      setStatus("Settings saved successfully.");
-    } catch (exception) {
-      setStatus("");
-      setError(exception instanceof Error ? exception.message : "Unable to save settings.");
-    }
+    setStatus("Settings saved locally.");
   }
 
   return (

@@ -1,7 +1,6 @@
 "use client";
 
 import { KeyboardEvent, useState } from "react";
-import { apiPost } from "@/lib/api";
 
 export default function ChatPage() {
   const [input, setInput] = useState("");
@@ -11,7 +10,7 @@ export default function ChatPage() {
   ]);
   const [error, setError] = useState("");
 
-  async function handleSend() {
+  function handleSend() {
     const trimmed = input.trim();
     if (!trimmed) return;
 
@@ -19,16 +18,8 @@ export default function ChatPage() {
     setMessages((current) => [...current, { speaker: "user", text: trimmed }]);
     setInput("");
 
-    try {
-      const data = await apiPost<{ reply: string }>("/api/chat", { message: trimmed });
-      setMessages((current) => [...current, { speaker: "assistant", text: data.reply }]);
-    } catch (exception) {
-      setError(exception instanceof Error ? exception.message : "Unable to fetch a response.");
-      setMessages((current) => [
-        ...current,
-        { speaker: "assistant", text: "Sorry, I couldn't fetch a response right now." },
-      ]);
-    }
+    const reply = `I heard you say: "${trimmed}". This demo runs without a backend.`;
+    setMessages((current) => [...current, { speaker: "assistant", text: reply }]);
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {

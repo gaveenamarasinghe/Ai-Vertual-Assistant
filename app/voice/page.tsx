@@ -1,25 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { apiPost } from "@/lib/api";
 
 export default function VoicePage() {
   const [isListening, setIsListening] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  async function toggleListening() {
+  function toggleListening() {
     const action = isListening ? "stop" : "start";
-
-    try {
-      const response = await apiPost<{ status: string; message: string }>("/api/voice", {
-        action,
-      });
-
-      setIsListening(action === "start");
-      setStatusMessage(response.message);
-    } catch (exception) {
-      setStatusMessage(exception instanceof Error ? exception.message : "Unable to change voice session state.");
-    }
+    setIsListening(action === "start");
+    setStatusMessage(action === "start" ? "Voice session started locally." : "Voice session stopped.");
   }
 
   return (

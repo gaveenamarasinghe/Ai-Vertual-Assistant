@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiPost } from "@/lib/api";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,7 +12,7 @@ export default function RegisterPage() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
 
@@ -22,20 +21,14 @@ export default function RegisterPage() {
       return;
     }
 
-    setStatus("Creating account...");
-
-    try {
-      await apiPost<{ user: { id: string; fullName: string; email: string } }>("/api/auth/register", {
-        fullName,
-        email,
-        password,
-      });
-      setStatus("Account created successfully. Redirecting to login...");
-      router.push("/auth/login");
-    } catch (exception) {
+    if (!fullName || !email || !password) {
+      setError("Please fill in all fields.");
       setStatus("");
-      setError(exception instanceof Error ? exception.message : "Unable to create account.");
+      return;
     }
+
+    setStatus("Account created successfully. Redirecting to login...");
+    router.push("/auth/login");
   }
 
   return (

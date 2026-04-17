@@ -1,25 +1,23 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { apiPost } from "@/lib/api";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setStatus("Sending reset instructions...");
 
-    try {
-      const data = await apiPost<{ message: string }>("/api/auth/forgot-password", { email });
-      setStatus(data.message);
-    } catch (exception) {
+    if (!email) {
+      setError("Please enter your email address.");
       setStatus("");
-      setError(exception instanceof Error ? exception.message : "Unable to send reset link.");
+      return;
     }
+
+    setStatus("Password reset instructions have been sent to your email.");
   }
 
   return (

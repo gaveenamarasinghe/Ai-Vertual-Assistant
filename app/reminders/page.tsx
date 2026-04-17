@@ -1,7 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import { apiGet, apiPost } from "@/lib/api";
+import { FormEvent, useState } from "react";
 
 interface Reminder {
   id: string;
@@ -11,39 +10,31 @@ interface Reminder {
 }
 
 export default function RemindersPage() {
-  const [tasks, setTasks] = useState<Reminder[]>([]);
+  const [tasks, setTasks] = useState<Reminder[]>([
+    { id: "1", title: "Review calendar", time: "Tomorrow • 9:00 AM", completed: false },
+    { id: "2", title: "Prepare meeting notes", time: "Today • 2:00 PM", completed: false },
+  ]);
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function loadReminders() {
-      try {
-        const data = await apiGet<Reminder[]>("/api/reminders");
-        setTasks(data);
-      } catch (exception) {
-        setError(exception instanceof Error ? exception.message : "Unable to load reminders.");
-      }
-    }
-
-    loadReminders();
-  }, []);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!title || !time) return;
     setError("");
 
-    try {
-      const reminder = await apiPost<Reminder>("/api/reminders", { title, time });
-      setTasks((current) => [reminder, ...current]);
-      setTitle("");
-      setTime("");
-      setShowForm(false);
-    } catch (exception) {
-      setError(exception instanceof Error ? exception.message : "Unable to add reminder.");
-    }
+    const reminder: Reminder = {
+      id: `${Date.now()}`,
+      title,
+      time,
+      completed: false,
+    };
+
+    setTasks((current) => [reminder, ...current]);
+    setTitle("");
+    setTime("");
+    setShowForm(false);
   }
 
   return (

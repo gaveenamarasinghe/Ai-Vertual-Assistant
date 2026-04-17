@@ -2,7 +2,6 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiPost } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,22 +10,17 @@ export default function LoginPage() {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
-    setStatus("Signing in...");
-
-    try {
-      const data = await apiPost<{ user: { id: string; fullName: string; email: string } }>(
-        "/api/auth/login",
-        { email, password }
-      );
-      setStatus(`Welcome back, ${data.user.fullName}!`);
-      router.push("/chat");
-    } catch (exception) {
+    if (!email || !password) {
+      setError("Please enter your email and password.");
       setStatus("");
-      setError(exception instanceof Error ? exception.message : "Unable to sign in.");
+      return;
     }
+
+    setError("");
+    setStatus(`Welcome back, ${email.split("@")[0]}!`);
+    router.push("/chat");
   }
 
   return (

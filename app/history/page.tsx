@@ -1,7 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { apiGet } from "@/lib/api";
+import { ChangeEvent, useMemo, useState } from "react";
 
 interface HistoryItem {
   id: string;
@@ -13,21 +12,11 @@ interface HistoryItem {
 export default function HistoryPage() {
   const [query, setQuery] = useState("");
   const [range, setRange] = useState("All Time");
-  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function loadHistory() {
-      try {
-        const data = await apiGet<HistoryItem[]>("/api/history");
-        setHistoryItems(data);
-      } catch (exception) {
-        setError(exception instanceof Error ? exception.message : "Unable to load history.");
-      }
-    }
-
-    loadHistory();
-  }, []);
+  const [historyItems] = useState<HistoryItem[]>([
+    { id: "1", title: "Weekly planning", meta: "Apr 17 • 1 message", createdAt: "2026-04-17" },
+    { id: "2", title: "Reminders setup", meta: "Apr 14 • 3 messages", createdAt: "2026-04-14" },
+    { id: "3", title: "Voice training", meta: "Apr 12 • 2 messages", createdAt: "2026-04-12" },
+  ]);
 
   const filteredItems = useMemo(
     () =>
@@ -82,11 +71,6 @@ export default function HistoryPage() {
         </div>
 
         {/* SEARCH + FILTER */}
-        {error ? (
-          <div className="rounded-2xl bg-red-50 p-4 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-            {error}
-          </div>
-        ) : null}
 
         <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full sm:w-1/2">
