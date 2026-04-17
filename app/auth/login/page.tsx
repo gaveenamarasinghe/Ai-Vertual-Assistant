@@ -1,42 +1,111 @@
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 px-6 py-12 dark:bg-zinc-950">
-      <main className="mx-auto max-w-3xl rounded-3xl bg-white p-10 shadow-xl shadow-zinc-200 dark:bg-zinc-900 dark:shadow-black/20">
-        <div className="flex flex-col gap-4">
-          <div>
-            <h1 className="text-4xl font-semibold text-zinc-950 dark:text-white">Sign in</h1>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">Access your AI assistant dashboard, history, and voice workflows securely.</p>
+    <div className="min-h-screen flex bg-zinc-50 dark:bg-zinc-950">
+
+      {/* Left - Image / Branding */}
+      <div className="hidden lg:flex w-1/2 relative items-center justify-center bg-zinc-900">
+        <img
+          src="https://images.unsplash.com/photo-1677442136019-21780ecad995"
+          alt="AI Background"
+          className="absolute inset-0 h-full w-full object-cover opacity-60"
+        />
+        <div className="relative z-10 max-w-md text-center text-white px-6">
+          <h2 className="text-3xl font-semibold">
+            Welcome Back
+          </h2>
+          <p className="mt-4 text-sm text-zinc-300">
+            Access your AI assistant, manage workflows, and explore powerful tools designed to boost your productivity.
+          </p>
+        </div>
+      </div>
+
+      {/* Right - Form */}
+      <div className="flex w-full lg:w-1/2 items-center justify-center px-6 py-12">
+        <main className="w-full max-w-md">
+
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-semibold text-zinc-900 dark:text-white">
+              Sign in
+            </h1>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              Enter your credentials to access your account.
+            </p>
           </div>
 
-          <section className="space-y-6">
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Email</label>
-              <input className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-800 dark:bg-zinc-950 dark:text-white" type="email" placeholder="you@company.com" />
-            </div>
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</label>
-              <input className="mt-2 w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-800 dark:bg-zinc-950 dark:text-white" type="password" placeholder="Enter your password" />
+          {/* Form */}
+          <div className="space-y-5">
+
+            {/* Email */}
+            <div>
+              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="you@company.com"
+                className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
+              />
             </div>
 
-            <button className="w-full rounded-full bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
+            {/* Password */}
+            <div>
+              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
+              />
+            </div>
+
+            {/* Forgot Password */}
+            <div className="flex justify-end">
+              <a
+                href="/auth/forgot-password"
+                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              >
+                Forgot password?
+              </a>
+            </div>
+
+            {/* Button */}
+            <button className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
               Continue
             </button>
 
-            <div className="flex items-center justify-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
-              <span>Or continue with</span>
+            {/* Divider */}
+            <div className="flex items-center gap-3 text-xs text-zinc-400">
+              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
+              OR
+              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
             </div>
 
+            {/* Social Login */}
             <div className="grid gap-3 sm:grid-cols-2">
-              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">Google</button>
-              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900">GitHub</button>
+              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">
+                Google
+              </button>
+              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">
+                GitHub
+              </button>
             </div>
 
-            <div className="text-center text-sm text-zinc-500 dark:text-zinc-400">
-              <a href="/auth/forgot-password" className="font-medium text-zinc-950 dark:text-white">Forgot password?</a>
-            </div>
-          </section>
-        </div>
-      </main>
+            {/* Signup */}
+            <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+              Don’t have an account?{" "}
+              <a
+                href="/auth/register"
+                className="font-medium text-zinc-900 hover:underline dark:text-white"
+              >
+                Sign up
+              </a>
+            </p>
+
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
