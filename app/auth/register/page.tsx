@@ -1,4 +1,23 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
 export default function RegisterPage() {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [accepted, setAccepted] = useState(false);
+  const [status, setStatus] = useState("");
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!accepted) {
+      setStatus("Please accept the terms before continuing.");
+      return;
+    }
+    setStatus(`Account created for ${fullName}`);
+  }
+
   return (
     <div className="min-h-screen flex bg-zinc-50 dark:bg-zinc-950">
 
@@ -35,7 +54,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Form */}
-          <div className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
 
             {/* Full Name */}
             <div>
@@ -43,6 +62,8 @@ export default function RegisterPage() {
                 Full Name
               </label>
               <input
+                value={fullName}
+                onChange={(event) => setFullName(event.target.value)}
                 type="text"
                 placeholder="Jane Doe"
                 className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
@@ -55,6 +76,8 @@ export default function RegisterPage() {
                 Email
               </label>
               <input
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 type="email"
                 placeholder="you@company.com"
                 className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
@@ -67,6 +90,8 @@ export default function RegisterPage() {
                 Password
               </label>
               <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 placeholder="Create a strong password"
                 className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
@@ -75,7 +100,12 @@ export default function RegisterPage() {
 
             {/* Terms */}
             <div className="flex items-start gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-              <input type="checkbox" className="mt-1" />
+              <input
+                checked={accepted}
+                onChange={(event) => setAccepted(event.target.checked)}
+                type="checkbox"
+                className="mt-1"
+              />
               <p>
                 I agree to the{" "}
                 <a href="#" className="font-medium text-zinc-900 dark:text-white">
@@ -89,9 +119,13 @@ export default function RegisterPage() {
             </div>
 
             {/* Button */}
-            <button className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+            <button type="submit" className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
               Create Account
             </button>
+
+            {status ? (
+              <p className="text-center text-sm text-green-600 dark:text-green-400">{status}</p>
+            ) : null}
 
             {/* Divider */}
             <div className="flex items-center gap-3 text-xs text-zinc-400">
@@ -121,7 +155,7 @@ export default function RegisterPage() {
               </a>
             </p>
 
-          </div>
+          </form>
         </main>
       </div>
     </div>
