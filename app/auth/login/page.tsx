@@ -1,15 +1,32 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiPost } from "@/lib/api";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus(`Signing in ${email}`);
+    setError("");
+    setStatus("Signing in...");
+
+    try {
+      const data = await apiPost<{ user: { id: string; fullName: string; email: string } }>(
+        "/api/auth/login",
+        { email, password }
+      );
+      setStatus(`Welcome back, ${data.user.fullName}!`);
+      router.push("/chat");
+    } catch (exception) {
+      setStatus("");
+      setError(exception instanceof Error ? exception.message : "Unable to sign in.");
+    }
   }
 
   return (
@@ -91,6 +108,10 @@ export default function LoginPage() {
             <button type="submit" className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
               Continue
             </button>
+
+            {error ? (
+              <p className="text-center text-sm text-red-600 dark:text-red-400">{error}</p>
+            ) : null}
 
             {status ? (
               <p className="text-center text-sm text-green-600 dark:text-green-400">{status}</p>

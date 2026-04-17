@@ -1,12 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { apiPost } from "@/lib/api";
 
 export default function VoicePage() {
   const [isListening, setIsListening] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
-  function toggleListening() {
-    setIsListening((current) => !current);
+  async function toggleListening() {
+    const action = isListening ? "stop" : "start";
+
+    try {
+      const response = await apiPost<{ status: string; message: string }>("/api/voice", {
+        action,
+      });
+
+      setIsListening(action === "start");
+      setStatusMessage(response.message);
+    } catch (exception) {
+      setStatusMessage(exception instanceof Error ? exception.message : "Unable to change voice session state.");
+    }
   }
 
   return (
@@ -96,6 +109,12 @@ export default function VoicePage() {
               >
                 {isListening ? "Stop Voice Session" : "Start Voice Session"}
               </button>
+
+              {statusMessage ? (
+                <p className="mt-4 text-center text-sm text-zinc-200 dark:text-zinc-300">
+                  {statusMessage}
+                </p>
+              ) : null}
             </div>
 
             {/* FLOATING STATUS */}

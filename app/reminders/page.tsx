@@ -1,24 +1,49 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { apiGet, apiPost } from "@/lib/api";
+
+interface Reminder {
+  id: string;
+  title: string;
+  time: string;
+  completed: boolean;
+}
 
 export default function RemindersPage() {
-  const [tasks, setTasks] = useState([
-    { title: "Review Q2 Strategy", time: "Today • 3:00 PM" },
-    { title: "Team Meeting", time: "Tomorrow • 11:00 AM" },
-    { title: "Client Follow-up", time: "Friday • 9:30 AM" },
-  ]);
+  const [tasks, setTasks] = useState<Reminder[]>([]);
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    async function loadReminders() {
+      try {
+        const data = await apiGet<Reminder[]>("/api/reminders");
+        setTasks(data);
+      } catch (exception) {
+        setError(exception instanceof Error ? exception.message : "Unable to load reminders.");
+      }
+    }
+
+    loadReminders();
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!title || !time) return;
-    setTasks((current) => [...current, { title, time }]);
-    setTitle("");
-    setTime("");
-    setShowForm(false);
+    setError("");
+
+    try {
+      const reminder = await apiPost<Reminder>("/api/reminders", { title, time });
+      setTasks((current) => [reminder, ...current]);
+      setTitle("");
+      setTime("");
+      setShowForm(false);
+    } catch (exception) {
+      setError(exception instanceof Error ? exception.message : "Unable to add reminder.");
+    }
   }
 
   return (
@@ -68,6 +93,12 @@ export default function RemindersPage() {
                 {tasks.length} Active
               </span>
             </div>
+
+            {error ? (
+              <div className="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+                {error}
+              </div>
+            ) : null}
 
             <div className="mt-6 space-y-4">
               {tasks.map((task, i) => (

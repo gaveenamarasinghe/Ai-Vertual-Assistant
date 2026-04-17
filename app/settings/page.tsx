@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apiGet, apiPost } from "@/lib/api";
 
 export default function SettingsPage() {
   const [fullName, setFullName] = useState("");
@@ -9,9 +10,38 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState("English");
   const [darkMode, setDarkMode] = useState(false);
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
 
-  function saveChanges() {
-    setStatus("Settings saved successfully.");
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const data = await apiGet<{ voiceStyle: string; language: string; darkMode: boolean }>("/api/settings");
+        setVoiceStyle(data.voiceStyle);
+        setLanguage(data.language);
+        setDarkMode(data.darkMode);
+      } catch (exception) {
+        setError(exception instanceof Error ? exception.message : "Unable to load settings.");
+      }
+    }
+
+    loadSettings();
+  }, []);
+
+  async function saveChanges() {
+    setError("");
+    setStatus("Saving settings...");
+
+    try {
+      await apiPost("/api/settings", {
+        voiceStyle,
+        language,
+        darkMode,
+      });
+      setStatus("Settings saved successfully.");
+    } catch (exception) {
+      setStatus("");
+      setError(exception instanceof Error ? exception.message : "Unable to save settings.");
+    }
   }
 
   return (
@@ -35,6 +65,12 @@ export default function SettingsPage() {
         </div>
 
         {/* Sections */}
+        {error ? (
+          <div className="rounded-2xl bg-red-50 p-4 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+            {error}
+          </div>
+        ) : null}
+
         <div className="mt-8 space-y-10">
 
           {/* Profile Section */}

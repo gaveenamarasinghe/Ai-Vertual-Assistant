@@ -1,6 +1,7 @@
 "use client";
 
 import { KeyboardEvent, useState } from "react";
+import { apiPost } from "@/lib/api";
 
 export default function ChatPage() {
   const [input, setInput] = useState("");
@@ -8,17 +9,26 @@ export default function ChatPage() {
     { speaker: "assistant", text: "Hello! I'm your AI assistant. Ask me anything or use voice input." },
     { speaker: "user", text: "What is my schedule for tomorrow?" },
   ]);
+  const [error, setError] = useState("");
 
-  function handleSend() {
+  async function handleSend() {
     const trimmed = input.trim();
     if (!trimmed) return;
 
-    setMessages((current) => [
-      ...current,
-      { speaker: "user", text: trimmed },
-      { speaker: "assistant", text: `Tomorrow you have a team briefing at 10 AM and a design review at 2 PM.` },
-    ]);
+    setError("");
+    setMessages((current) => [...current, { speaker: "user", text: trimmed }]);
     setInput("");
+
+    try {
+      const data = await apiPost<{ reply: string }>("/api/chat", { message: trimmed });
+      setMessages((current) => [...current, { speaker: "assistant", text: data.reply }]);
+    } catch (exception) {
+      setError(exception instanceof Error ? exception.message : "Unable to fetch a response.");
+      setMessages((current) => [
+        ...current,
+        { speaker: "assistant", text: "Sorry, I couldn't fetch a response right now." },
+      ]);
+    }
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
@@ -108,6 +118,12 @@ export default function ChatPage() {
                 </div>
               </div>
             ))}
+
+            {error ? (
+              <div className="rounded-2xl bg-red-50 p-4 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+                {error}
+              </div>
+            ) : null}
           </section>
 
           {/* INPUT */}
