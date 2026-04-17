@@ -1,4 +1,33 @@
+"use client";
+
+import { KeyboardEvent, useState } from "react";
+
 export default function ChatPage() {
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+    { speaker: "assistant", text: "Hello! I'm your AI assistant. Ask me anything or use voice input." },
+    { speaker: "user", text: "What is my schedule for tomorrow?" },
+  ]);
+
+  function handleSend() {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+
+    setMessages((current) => [
+      ...current,
+      { speaker: "user", text: trimmed },
+      { speaker: "assistant", text: `Tomorrow you have a team briefing at 10 AM and a design review at 2 PM.` },
+    ]);
+    setInput("");
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSend();
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-white px-6 py-8 dark:from-zinc-950 dark:to-zinc-900">
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[320px_1fr]">
@@ -72,31 +101,30 @@ export default function ChatPage() {
 
           {/* CHAT MESSAGES */}
           <section className="flex-1 space-y-4 overflow-y-auto p-6">
-
-            {/* ASSISTANT */}
-            <div className="flex">
-              <div className="max-w-xl rounded-2xl bg-zinc-100 p-4 text-sm dark:bg-zinc-800">
-                Hello! I'm your AI assistant. Ask me anything or use voice input.
+            {messages.map((message, index) => (
+              <div key={index} className={message.speaker === "assistant" ? "flex" : "flex justify-end"}>
+                <div className={`max-w-xl rounded-2xl p-4 text-sm ${message.speaker === "assistant" ? "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white" : "bg-indigo-600 text-white"}`}>
+                  {message.text}
+                </div>
               </div>
-            </div>
-
-            {/* USER */}
-            <div className="flex justify-end">
-              <div className="max-w-xl rounded-2xl bg-indigo-600 p-4 text-sm text-white">
-                What is my schedule for tomorrow?
-              </div>
-            </div>
-
+            ))}
           </section>
 
           {/* INPUT */}
           <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
             <div className="flex items-center gap-3">
               <input
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                onKeyDown={handleKeyDown}
                 className="flex-1 rounded-full border border-zinc-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
                 placeholder="Type your message..."
               />
-              <button className="rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500">
+              <button
+                type="button"
+                onClick={handleSend}
+                className="rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500"
+              >
                 Send
               </button>
             </div>

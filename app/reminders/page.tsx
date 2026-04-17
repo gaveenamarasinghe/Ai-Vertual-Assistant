@@ -1,4 +1,26 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
 export default function RemindersPage() {
+  const [tasks, setTasks] = useState([
+    { title: "Review Q2 Strategy", time: "Today • 3:00 PM" },
+    { title: "Team Meeting", time: "Tomorrow • 11:00 AM" },
+    { title: "Client Follow-up", time: "Friday • 9:30 AM" },
+  ]);
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!title || !time) return;
+    setTasks((current) => [...current, { title, time }]);
+    setTitle("");
+    setTime("");
+    setShowForm(false);
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-white px-6 py-10 dark:from-zinc-950 dark:to-zinc-900">
       <main className="mx-auto max-w-7xl rounded-[2rem] bg-white p-10 shadow-2xl shadow-zinc-200/40 dark:bg-zinc-900 dark:shadow-black/30">
@@ -14,7 +36,7 @@ export default function RemindersPage() {
             </p>
           </div>
 
-          <button className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-500">
+          <button onClick={() => setShowForm(true)} className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-500">
             + Add Reminder
           </button>
         </div>
@@ -43,16 +65,12 @@ export default function RemindersPage() {
                 </p>
               </div>
               <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-600">
-                5 Active
+                {tasks.length} Active
               </span>
             </div>
 
             <div className="mt-6 space-y-4">
-              {[
-                { title: "Review Q2 Strategy", time: "Today • 3:00 PM" },
-                { title: "Team Meeting", time: "Tomorrow • 11:00 AM" },
-                { title: "Client Follow-up", time: "Friday • 9:30 AM" },
-              ].map((task, i) => (
+              {tasks.map((task, i) => (
                 <div
                   key={i}
                   className="flex items-center justify-between rounded-2xl bg-white p-5 shadow-sm transition hover:shadow-md dark:bg-zinc-900"
@@ -70,6 +88,45 @@ export default function RemindersPage() {
                 </div>
               ))}
             </div>
+          </section>
+
+          <section className="rounded-3xl bg-white p-6 shadow-sm dark:bg-zinc-900">
+            {showForm ? (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Task</label>
+                  <input
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                    type="text"
+                    placeholder="New task title"
+                    className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Time</label>
+                  <input
+                    value={time}
+                    onChange={(event) => setTime(event.target.value)}
+                    type="text"
+                    placeholder="Tomorrow • 9:00 AM"
+                    className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none transition dark:border-zinc-700 dark:bg-zinc-950 dark:text-white"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button type="submit" className="rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500">
+                    Save Reminder
+                  </button>
+                  <button type="button" onClick={() => setShowForm(false)} className="rounded-full border border-zinc-300 px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-800">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button onClick={() => setShowForm(true)} className="w-full rounded-full bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
+                Add a new reminder
+              </button>
+            )}
           </section>
 
           {/* RIGHT - AI PANEL */}

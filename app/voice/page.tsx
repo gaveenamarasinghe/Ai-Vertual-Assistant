@@ -1,4 +1,14 @@
+"use client";
+
+import { useState } from "react";
+
 export default function VoicePage() {
+  const [isListening, setIsListening] = useState(false);
+
+  function toggleListening() {
+    setIsListening((current) => !current);
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-white px-6 py-10 dark:from-zinc-950 dark:to-zinc-900">
       <main className="mx-auto max-w-6xl rounded-[2rem] bg-white p-10 shadow-2xl shadow-zinc-200/40 dark:bg-zinc-900 dark:shadow-black/30">
@@ -14,9 +24,9 @@ export default function VoicePage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-green-500/10 px-4 py-2 text-sm font-semibold text-green-600">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            Listening Ready
+          <div className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${isListening ? "bg-green-500/10 text-green-600" : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"}`}>
+            <span className={`h-2 w-2 rounded-full ${isListening ? "bg-green-500 animate-pulse" : "bg-zinc-400"}`} />
+            {isListening ? "Listening Ready" : "Ready to listen"}
           </div>
         </div>
 
@@ -79,8 +89,12 @@ export default function VoicePage() {
                 Tap the button and interact with your assistant using natural language.
               </p>
 
-              <button className="mt-8 w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-200">
-                Start Voice Session
+              <button
+                type="button"
+                onClick={toggleListening}
+                className="mt-8 w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-200"
+              >
+                {isListening ? "Stop Voice Session" : "Start Voice Session"}
               </button>
             </div>
 

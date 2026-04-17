@@ -1,4 +1,22 @@
+"use client";
+
+import { useState } from "react";
+
 export default function DashboardPage() {
+  const [stats, setStats] = useState({
+    queries: 1240,
+    hours: 38,
+    sessions: 24,
+  });
+
+  const refresh = () => {
+    setStats({
+      queries: 1200 + Math.floor(Math.random() * 200),
+      hours: 30 + Math.floor(Math.random() * 20),
+      sessions: 18 + Math.floor(Math.random() * 10),
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-white px-6 py-10 dark:from-zinc-950 dark:to-zinc-900">
       <main className="mx-auto max-w-7xl space-y-10">
@@ -15,7 +33,7 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            <button className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-500">
+            <button onClick={refresh} className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-500">
               Refresh Data
             </button>
           </div>
@@ -37,7 +55,7 @@ export default function DashboardPage() {
           <div className="rounded-3xl bg-white p-8 shadow-md transition hover:shadow-xl dark:bg-zinc-900">
             <p className="text-sm text-zinc-500">Total Queries</p>
             <h2 className="mt-2 text-4xl font-bold text-zinc-900 dark:text-white">
-              1,240
+              {stats.queries}
             </h2>
             <p className="mt-2 text-xs text-green-600">+12% this month</p>
           </div>
