@@ -1,34 +1,4 @@
-"use client";
-
-import { ChangeEvent, useMemo, useState } from "react";
-
-interface HistoryItem {
-  id: string;
-  title: string;
-  meta: string;
-  createdAt: string;
-}
-
 export default function HistoryPage() {
-  const [query, setQuery] = useState("");
-  const [range, setRange] = useState("All Time");
-  const [historyItems] = useState<HistoryItem[]>([
-    { id: "1", title: "Weekly planning", meta: "Apr 17 • 1 message", createdAt: "2026-04-17" },
-    { id: "2", title: "Reminders setup", meta: "Apr 14 • 3 messages", createdAt: "2026-04-14" },
-    { id: "3", title: "Voice training", meta: "Apr 12 • 2 messages", createdAt: "2026-04-12" },
-  ]);
-
-  const filteredItems = useMemo(
-    () =>
-      historyItems.filter((item) => {
-        return (
-          item.title.toLowerCase().includes(query.toLowerCase()) &&
-          (range === "All Time" || item.meta.includes(range.replace("This ", "")))
-        );
-      }),
-    [historyItems, query, range]
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 via-white to-zinc-50 px-6 py-10 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
       <main className="mx-auto max-w-7xl space-y-10">
@@ -71,12 +41,9 @@ export default function HistoryPage() {
         </div>
 
         {/* SEARCH + FILTER */}
-
         <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full sm:w-1/2">
             <input
-              value={query}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
               type="text"
               placeholder="Search conversations..."
               className="w-full rounded-full border border-zinc-300 px-5 py-3 pl-10 text-sm outline-none focus:ring-2 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
@@ -84,11 +51,7 @@ export default function HistoryPage() {
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">🔍</span>
           </div>
 
-          <select
-            value={range}
-            onChange={(event) => setRange(event.target.value)}
-            className="rounded-full border border-zinc-300 px-4 py-3 text-sm shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
-          >
+          <select className="rounded-full border border-zinc-300 px-4 py-3 text-sm shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-white">
             <option>All Time</option>
             <option>Today</option>
             <option>This Week</option>
@@ -98,7 +61,11 @@ export default function HistoryPage() {
 
         {/* HISTORY LIST */}
         <section className="space-y-4">
-          {filteredItems.map((item, i) => (
+          {[
+            { title: "Travel Planning Review", meta: "Apr 14 • 12 messages" },
+            { title: "Reminder Workflow Setup", meta: "Apr 13 • 8 messages" },
+            { title: "Voice Assistant Onboarding", meta: "Apr 12 • 6 messages" },
+          ].map((item, i) => (
             <div
               key={i}
               className="group flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-xl dark:bg-zinc-900"

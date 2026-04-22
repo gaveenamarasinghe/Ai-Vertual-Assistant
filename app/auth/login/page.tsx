@@ -1,28 +1,4 @@
-"use client";
-
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState("");
-  const [error, setError] = useState("");
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!email || !password) {
-      setError("Please enter your email and password.");
-      setStatus("");
-      return;
-    }
-
-    setError("");
-    setStatus(`Welcome back, ${email.split("@")[0]}!`);
-    router.push("/chat");
-  }
-
   return (
     <div className="min-h-screen flex bg-zinc-50 dark:bg-zinc-950">
 
@@ -58,7 +34,7 @@ export default function LoginPage() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-5">
 
             {/* Email */}
             <div>
@@ -66,8 +42,6 @@ export default function LoginPage() {
                 Email
               </label>
               <input
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
                 type="email"
                 placeholder="you@company.com"
                 className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
@@ -80,8 +54,6 @@ export default function LoginPage() {
                 Password
               </label>
               <input
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 placeholder="Enter your password"
                 className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
@@ -99,17 +71,9 @@ export default function LoginPage() {
             </div>
 
             {/* Button */}
-            <button type="submit" className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+            <button className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
               Continue
             </button>
-
-            {error ? (
-              <p className="text-center text-sm text-red-600 dark:text-red-400">{error}</p>
-            ) : null}
-
-            {status ? (
-              <p className="text-center text-sm text-green-600 dark:text-green-400">{status}</p>
-            ) : null}
 
             {/* Divider */}
             <div className="flex items-center gap-3 text-xs text-zinc-400">
@@ -139,7 +103,7 @@ export default function LoginPage() {
               </a>
             </p>
 
-          </form>
+          </div>
         </main>
       </div>
     </div>
