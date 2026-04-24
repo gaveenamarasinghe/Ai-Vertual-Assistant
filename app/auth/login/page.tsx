@@ -1,4 +1,40 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { auth } from '@/app/utils/api';
+import { useToast } from '@/app/components/Toast';
+
 export default function LoginPage() {
+  const router = useRouter();
+  const { showToast } = useToast();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await auth.login(email, password);
+      showToast('Login Successful! ', 'success');
+      setTimeout(() => {
+        router.push('/');
+      }, 1500);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setError(message);
+      showToast(message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-zinc-50 dark:bg-zinc-950">
 
@@ -33,8 +69,15 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {/* Error */}
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm dark:bg-red-900/20 dark:text-red-400">
+              {error}
+            </div>
+          )}
+
           {/* Form */}
-          <div className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
 
             {/* Email */}
             <div>
@@ -43,8 +86,10 @@ export default function LoginPage() {
               </label>
               <input
                 type="email"
-                placeholder="you@company.com"
-                className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="mt-2 w-full rounded-xl border px-4 py-3 text-sm dark:bg-zinc-900 dark:text-white"
               />
             </div>
 
@@ -55,8 +100,10 @@ export default function LoginPage() {
               </label>
               <input
                 type="password"
-                placeholder="Enter your password"
-                className="mt-2 w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm transition outline-none focus:border-zinc-900 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:focus:border-white dark:focus:ring-zinc-700"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="mt-2 w-full rounded-xl border px-4 py-3 text-sm dark:bg-zinc-900 dark:text-white"
               />
             </div>
 
@@ -71,39 +118,23 @@ export default function LoginPage() {
             </div>
 
             {/* Button */}
-            <button className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
-              Continue
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full rounded-full bg-zinc-900 px-5 py-3 text-sm text-white hover:bg-zinc-700 disabled:opacity-50"
+            >
+              {loading ? 'Signing in...' : 'Continue'}
             </button>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3 text-xs text-zinc-400">
-              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
-              OR
-              <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
-            </div>
-
-            {/* Social Login */}
-            <div className="grid gap-3 sm:grid-cols-2">
-              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">
-                Google
-              </button>
-              <button className="rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800">
-                GitHub
-              </button>
-            </div>
-
             {/* Signup */}
-            <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-center text-sm text-zinc-500">
               Don’t have an account?{" "}
-              <a
-                href="/auth/register"
-                className="font-medium text-zinc-900 hover:underline dark:text-white"
-              >
+              <a href="/auth/register" className="font-medium text-zinc-900 dark:text-white">
                 Sign up
               </a>
             </p>
 
-          </div>
+          </form>
         </main>
       </div>
     </div>
