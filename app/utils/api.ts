@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// Use relative URLs - Next.js API routes are on the same domain
+const API_URL = '';
 
 interface FetchOptions extends RequestInit {
   token?: string;
