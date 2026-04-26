@@ -1,5 +1,5 @@
-// Use relative URLs - Next.js API routes are on the same domain
-const API_URL = '';
+// Backend API URL
+const API_URL = 'http://localhost:5000';
 
 interface FetchOptions extends RequestInit {
   token?: string;
