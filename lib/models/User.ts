@@ -48,12 +48,11 @@ userSchema.methods.matchPassword = async function(enteredPassword: string) {
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
 
 // Generate JWT Token
 userSchema.methods.getSignedJwtToken = function() {
   return jwt.sign({ id: this._id }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRE
+    expiresIn: '7d'
   });
 };
 

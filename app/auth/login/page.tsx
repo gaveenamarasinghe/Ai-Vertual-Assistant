@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/app/utils/api';
-import { useToast } from '@/app/components/Toast';
+import { auth } from '@/utils/api';
+import { useToast } from '@/components/Toast';
 
 export default function LoginPage() {
   const router = useRouter();

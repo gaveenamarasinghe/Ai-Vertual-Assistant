@@ -5,8 +5,9 @@ import Reminder from '@/lib/models/Reminder';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     await connectDB();
     
@@ -22,7 +23,7 @@ export async function PUT(
     const { title, description, date, completed } = await request.json();
 
     const reminder = await Reminder.findOneAndUpdate(
-      { _id: params.id, user: user._id },
+      { _id: id, user: user._id },
       { title, description, date, completed },
       { new: true }
     );
@@ -48,8 +49,9 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     await connectDB();
     
@@ -62,7 +64,7 @@ export async function DELETE(
       );
     }
 
-    const reminder = await Reminder.findOneAndDelete({ _id: params.id, user: user._id });
+    const reminder = await Reminder.findOneAndDelete({ _id: id, user: user._id });
 
     if (!reminder) {
       return NextResponse.json(
